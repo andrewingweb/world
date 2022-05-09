@@ -1,7 +1,7 @@
-import * as THREE from "https://cdn.skypack.dev/three@0.136";
-import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/GLTFLoader.js";
-import { FirstPersonControls } from "https://cdn.skypack.dev/three@0.136/examples/jsm/controls/FirstPersonControls.js";
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js";
 
+import { FirstPersonControls } from "https://cdn.skypack.dev/three@0.136/examples/jsm/controls/FirstPersonControls.js";
+import { GLTFLoader } from "./GLTFLoader";
 const KEYS = {
   a: 65,
   s: 83,
@@ -329,6 +329,13 @@ class FirstPersonCameraDemo {
     plane.rotation.x = -Math.PI / 2;
     this.scene_.add(plane);
 
+    //const loader1 = new GLTFLoader();
+    //var tokyo1;
+    loader1.load("./tokyo/scene.gltf", function (gltf) {
+      tokyo1 = gltf.scene;
+      this.scene_.add(gltf.scene);
+    });
+
     const box = new THREE.Mesh(
       new THREE.BoxGeometry(4, 4, 4),
       this.loadMaterial_("vintage-tile1_", 0.2)
@@ -337,16 +344,6 @@ class FirstPersonCameraDemo {
     box.castShadow = true;
     box.receiveShadow = true;
     //this.scene_.add(box);
-
-    const gloader1 = new GLTFLoader();
-    gloader1.load("./tokyo/scene.gltf", (tokyo) => {
-      mixer = new THREE.AnimationMixer(tokyo.scene);
-      tokyo.animations.forEach((clip) => {
-        mixer.clipAction(clip).play();
-      });
-      this.scene_.add(tokyo);
-    });
-    
 
     const concreteMaterial = this.loadMaterial_("concrete3-", 4);
 
